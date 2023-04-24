@@ -1,29 +1,107 @@
 package com.bs.practece.map.view;
 
+import java.util.Scanner;
+
+import com.bs.practece.map.controller.MemberController;
+import com.bs.practece.map.model.vo.Member;
+
 public class MemberMenu {
+	MemberController controller=new MemberController();
+	Scanner sc=new Scanner(System.in);
 	//메인메뉴
 	public void mainMenu() {
-		
+		int order=0;
+		while (true) {
+			System.out.println("==============BS 사이트=============");
+			System.out.println("=========메인 메뉴==========");
+			System.out.println("1. 회원가입");
+			System.out.println("2. 로그인");
+			System.out.println("3. 같은 이름 회원 찾기");
+			System.out.println("9. 종료");
+			System.out.print("번호 입력 : ");
+			order=sc.nextInt();
+			
+			switch(order){
+				case 1: joinMembership(); break;
+				case 2: logIn(); memberMenu(); break;
+				case 3: sameName(); break;
+				case 9: System.out.println("프로그램 종료"); return;
+				default: System.out.println("잘못 입력하였습니다. 다시 입력해주세요."); break; 
+			}
+		}
 	}
 	
 	//회원메뉴 선택
 	public void memberMenu() {
-		
+		int order=0;
+		while (true) {
+			System.out.println("=========회원 메뉴==========");
+			System.out.println("1. 비밀번호 변경");
+			System.out.println("2. 이름 변경");
+			System.out.println("3. 로그아웃");
+			System.out.print("번호 입력 : ");
+			order=sc.nextInt();
+			
+			switch(order){
+				case 1: joinMembership(); break;
+				case 2: logIn(); memberMenu(); break;
+				case 3: System.out.println("로그아웃 되었습니다."); return;
+				default: System.out.println("잘못 입력하였습니다. 다시 입력해주세요."); break; 
+			}
+		}
 	}
 	
 	//회원가입 성공여부를 알리는 메소드
 	public void joinMembership() {
+		Member m=new Member();
+		sc.nextLine();
+		System.out.println("==========회원가입==========");
+		System.out.print("회원 아이디 : ");
+		String id=sc.nextLine();
+		System.out.print("회원 비밀번호 : ");
+		m.setPassword(sc.nextLine());
+		System.out.print("회원 이름 : ");
+		m.setName(sc.nextLine());
+		
+		if(controller.joinMembership(id, m)) System.out.println("성공적으로 회원가입 완료하였습니다.");
+		else System.out.println("중복된 아이디입니다. 다시 입력해주세요.");
 		
 	}
 	
 	//로그인 성공 여부를 알리는 메소드
 	public void logIn() {
+		Member m=new Member();
+		sc.nextLine();
+		System.out.println("=========로그인========");
+		System.out.print("회원 아이디 : ");
+		String id=sc.nextLine();
+		System.out.print("회원 비밀번호 : ");
+		m.setPassword(sc.nextLine());
 		
+		if(controller.logIn(id, m)!=null) {
+			System.out.println(controller.logIn(id, m)+"님, 환영합니다!");
+		}else System.out.println("틀린 아이디 또는 비밀번호입니다.");
 	}
 	
 	//비밀번호 변경 성공을 알리는 메소드
 	public void changePassword() {
-		
+		sc.nextLine();
+		boolean flag = true;
+		while (flag) {
+			System.out.println("=========비밀번호 변경========");
+			System.out.print("회원 아이디 : ");
+			String id = sc.nextLine();
+			System.out.print("이전 비밀번호 : ");
+			String oldPwd = sc.nextLine();
+			System.out.print("새로운 비밀번호 : ");
+			String newPwd = sc.nextLine();
+
+			if (controller.changePassword(id, oldPwd, newPwd)) {
+				System.out.println("비밀번호 변경에 성공했습니다.");
+				flag = false;
+			} else
+				System.out.println("비밀번호 변경에 실패했습니다. 다시 입력해주세요.");
+		}
 	}
 	
 	//이름 변경 성공 여부를 알리는 메소드
