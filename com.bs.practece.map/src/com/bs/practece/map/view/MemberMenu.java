@@ -1,6 +1,9 @@
 package com.bs.practece.map.view;
 
+import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeMap;
 
 import com.bs.practece.map.controller.MemberController;
 import com.bs.practece.map.model.vo.Member;
@@ -88,10 +91,10 @@ public class MemberMenu {
 		sc.nextLine();
 		boolean flag = true;
 		while (flag) {
-			System.out.println("=========비밀번호 변경========");
+			System.out.println("=========이름 변경========");
 			System.out.print("회원 아이디 : ");
 			String id = sc.nextLine();
-			System.out.print("이전 비밀번호 : ");
+			System.out.print("이전 이름 : ");
 			String oldPwd = sc.nextLine();
 			System.out.print("새로운 비밀번호 : ");
 			String newPwd = sc.nextLine();
@@ -106,11 +109,39 @@ public class MemberMenu {
 	
 	//이름 변경 성공 여부를 알리는 메소드
 	public void changeName() {
-		
+		Member m=new Member();
+		sc.nextLine();
+		boolean flag = true;
+		while (flag) {
+			System.out.println("=========이름 변경========");
+			System.out.print("회원 아이디 : ");
+			String id=sc.nextLine();
+			System.out.print("회원 비밀번호 : ");
+			m.setPassword(sc.nextLine());
+			
+			if(controller.logIn(id, m)!=null) {
+				System.out.println("현재 설정된 이름 : "+controller.logIn(id, m));
+				System.out.print("변경할 이름 : ");
+				String newName=sc.nextLine();
+				controller.changeName(id, newName);
+				System.out.println("이름 변경에 성공하였습니다.");
+				flag=false;
+			}else System.out.println("이름 변경에 실패했습니다. 다시 입력해주세요.");
+		}
 	}
 	
 	//같은 이름을 가진 사람들을 출력하는 메소드
 	public void sameName() {
-		
+		sc.nextLine();
+		System.out.println("=========동일 이름 검색========");
+		System.out.print("검색할 이름 : ");
+		String name=sc.nextLine();
+		TreeMap members=controller.sameName(name);
+
+		Set entry=members.entrySet();
+		Iterator it=entry.iterator();
+		while(it.hasNext()) {
+			System.out.println(((Member)it).toString());
+		}
 	}
 }
