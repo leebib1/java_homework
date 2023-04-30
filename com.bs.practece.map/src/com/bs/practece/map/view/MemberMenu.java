@@ -1,6 +1,7 @@
 package com.bs.practece.map.view;
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeMap;
@@ -46,8 +47,8 @@ public class MemberMenu {
 			order=sc.nextInt();
 			
 			switch(order){
-				case 1: joinMembership(); break;
-				case 2: logIn(); memberMenu(); break;
+				case 1: changePassword(); break;
+				case 2: changeName(); break;
 				case 3: System.out.println("로그아웃 되었습니다."); return;
 				default: System.out.println("잘못 입력하였습니다. 다시 입력해주세요."); break; 
 			}
@@ -73,35 +74,34 @@ public class MemberMenu {
 	
 	//로그인 성공 여부를 알리는 메소드
 	public void logIn() {
-		Member m=new Member();
 		sc.nextLine();
 		System.out.println("=========로그인========");
 		System.out.print("회원 아이디 : ");
 		String id=sc.nextLine();
 		System.out.print("회원 비밀번호 : ");
-		m.setPassword(sc.nextLine());
+		String pwd=sc.nextLine();
 		
-		if(controller.logIn(id, m)!=null) {
-			System.out.println(controller.logIn(id, m)+"님, 환영합니다!");
+		if(controller.logIn(id, pwd)!=null) {
+			System.out.println(controller.logIn(id, pwd)+"님, 환영합니다!");
 		}else System.out.println("틀린 아이디 또는 비밀번호입니다.");
 	}
 	
 	//비밀번호 변경 성공을 알리는 메소드
 	public void changePassword() {
 		sc.nextLine();
-		boolean flag = true;
-		while (flag) {
+		boolean start = true;
+		while (start) {
 			System.out.println("=========이름 변경========");
 			System.out.print("회원 아이디 : ");
 			String id = sc.nextLine();
-			System.out.print("이전 이름 : ");
+			System.out.print("이전 비밀번호 : ");
 			String oldPwd = sc.nextLine();
 			System.out.print("새로운 비밀번호 : ");
 			String newPwd = sc.nextLine();
 
 			if (controller.changePassword(id, oldPwd, newPwd)) {
 				System.out.println("비밀번호 변경에 성공했습니다.");
-				flag = false;
+				start = false;
 			} else
 				System.out.println("비밀번호 변경에 실패했습니다. 다시 입력해주세요.");
 		}
@@ -111,21 +111,21 @@ public class MemberMenu {
 	public void changeName() {
 		Member m=new Member();
 		sc.nextLine();
-		boolean flag = true;
-		while (flag) {
+		boolean start = true;
+		while (start) {
 			System.out.println("=========이름 변경========");
 			System.out.print("회원 아이디 : ");
 			String id=sc.nextLine();
 			System.out.print("회원 비밀번호 : ");
-			m.setPassword(sc.nextLine());
+			String pwd=sc.nextLine();
 			
-			if(controller.logIn(id, m)!=null) {
-				System.out.println("현재 설정된 이름 : "+controller.logIn(id, m));
+			if(controller.logIn(id, pwd)!=null) {
+				System.out.println("현재 설정된 이름 : "+controller.logIn(id, pwd));
 				System.out.print("변경할 이름 : ");
 				String newName=sc.nextLine();
 				controller.changeName(id, newName);
 				System.out.println("이름 변경에 성공하였습니다.");
-				flag=false;
+				start=false;
 			}else System.out.println("이름 변경에 실패했습니다. 다시 입력해주세요.");
 		}
 	}
@@ -141,7 +141,11 @@ public class MemberMenu {
 		Set entry=members.entrySet();
 		Iterator it=entry.iterator();
 		while(it.hasNext()) {
-			System.out.println(((Member)it).toString());
+//			System.out.println(name+" - "+);
+//			Map.Entry all=(Map.Entry)it.next();
+			Map.Entry names=(Map.Entry)it.next();
+			System.out.println(names.getValue()+" "+names.getKey());
 		}
+		
 	}
 }

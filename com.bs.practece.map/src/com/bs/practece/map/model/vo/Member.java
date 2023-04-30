@@ -8,7 +8,7 @@ public class Member {
 		
 	}
 	
-	public Member(String password, String name) {
+	public Member(String name, String password) {
 		super();
 		this.password = password;
 		this.name = name;
